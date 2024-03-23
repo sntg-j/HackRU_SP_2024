@@ -1,13 +1,13 @@
+// src/pages/PathFindingPage.jsx
 import React from 'react';
 import Navbar from '../components/Navbar';
 
-function HomePage() {
+function PathFindingPage() {
   return (
     <div>
-      <Navbar />
       <h1>ROUTE PAGE</h1>
     </div>
   );
 }
 
-export default HomePage;
+export default PathFindingPage;
