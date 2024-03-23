@@ -1,10 +1,11 @@
 import React from 'react';
+import Navbar from '../components/Navbar';
 
 function HomePage() {
   return (
     <div>
-      <h1>Welcome to My App</h1>
-      <p>This is the home page of my React application.</p>
+      <Navbar />
+      <h1>ROUTE PAGE</h1>
     </div>
   );
 }
