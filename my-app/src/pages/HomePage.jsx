@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 function HomePage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchedItem, setSearchedItem] = useState('');
+  const [savedItems, setSavedItems] = useState([]);
   const navigate = useNavigate();
 
   const handleSearchChange = (event) => {
@@ -12,24 +13,32 @@ function HomePage() {
   };
 
   const handleSearchClick = () => {
-    // Update the URL query parameters with the search term
-    navigate(`/?search=${searchTerm}`);
+    if (searchTerm) {
+      // Update the URL query parameters with the search term
+      navigate(`/?search=${searchTerm}`);
 
-    // Set the searched item
-    setSearchedItem(searchTerm);
+      // Set the searched item
+      setSearchedItem(searchTerm);
 
-    // Clear the search term
-    setSearchTerm('');
+      // Add the searched item to the saved items
+      setSavedItems((prevItems) => [...prevItems, searchTerm]);
 
-    // Optionally, you can remove the page refresh
-    // window.location.reload();
+      // Clear the search term
+      setSearchTerm('');
+    }
   };
 
-
+  const handleRemoveItem = (index) => {
+    const newSavedItems = [...savedItems];
+    newSavedItems.splice(index, 1);
+    setSavedItems(newSavedItems);
+  };
 
   return (
-    <div>
-      <h1 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>Your Grocery List</h1>
+    <div style={styles.container}>
+      <h1 style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        Your Grocery List
+      </h1>
 
       <input
         type="text"
@@ -39,11 +48,44 @@ function HomePage() {
         style={{ width: '100%', padding: '10px', marginBottom: '20px' }}
       />
       <button onClick={handleSearchClick}>Search</button>
-      {searchedItem && (
-        <p>{searchedItem}</p>
-      )}
+      {savedItems.map((item, index) => (
+        <div style={styles.itemContainer}>
+          <span>{item}</span>
+          <button style={styles.removeButton} onClick={() => handleRemoveItem(index)}>
+            x
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
+
+const styles = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+    flexDirection: 'column',
+  },
+  input: {
+    width: '100%',
+    padding: '10px',
+    marginBottom: '20px',
+  },
+  itemContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '10px',
+  },
+  removeButton: {
+    backgroundColor: 'transparent',
+    border: 'none',
+    color: 'red',
+    fontSize: '1.5em',
+    cursor: 'pointer',
+  },
+};
 
 export default HomePage;
